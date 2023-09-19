@@ -1,0 +1,8 @@
+1) Dashboard with current status
+2) Flexible budget planning
+3) Comfortable transaction entry 
+4) Monthly overview
+5) Categorization of assets
+6) Customizable expense category
+7) Track categorywise overspending and savings
+8) View details of previous transactions
