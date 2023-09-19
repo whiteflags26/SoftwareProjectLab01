@@ -1,0 +1,11 @@
+1) user and autherization 
+2) cash amount status
+3) Transfer money from one account to another
+4) Adding Debt and receivables
+5) Default template account 
+6) Creating custom account 
+7) Categories and labels
+8) 30-Day or Week Overview
+9) Graphs and charts
+10) Detect Anomaly
+11) event/occasion mode

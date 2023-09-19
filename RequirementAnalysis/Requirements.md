@@ -3,7 +3,7 @@
 
 ## Dashboard
 - Cash Amount Status
-- Remainder of Overspending
+- Reminder of Overspending
 - Event/Occasion Mode
 
 ## Management
