@@ -1,0 +1,10 @@
+1) Current Status Overview on Dashboard
+2) Reminder of overspending
+3) Simple and comfortable input system 
+4) Easy management of data
+5) Planning budget on day/week/month
+6) Changing budget
+7) Planned Payments (Installment, Bills, Monthly Groceries)
+8) Set Goals for Saving
+9) Tracking Cashflow
+10) Periodic Expense and savings Overview(Weekly/Bi-Weekly/Monthly etc)
