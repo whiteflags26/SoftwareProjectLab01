@@ -1,10 +1,20 @@
-1) Current Status Overview on Dashboard
-2) Reminder of overspending
-3) Simple and comfortable input system 
-4) Easy management of data
-5) Planning budget on day/week/month
-6) Changing budget
-7) Planned Payments (Installment, Bills, Monthly Groceries)
-8) Set Goals for Saving
-9) Tracking Cashflow
-10) Periodic Expense and savings Overview(Weekly/Bi-Weekly/Monthly etc)
+Software Requirements I gathered from some existing market apps:
+
+1. Budget making window 
+ - View / make budget - monthly (demo plan)
+ - add transaction - date, amount,merchant,budget item (Income and expense)
+
+2. Income category 
+  - Example category
+  - add category - sub category - plus amount and minus amount 
+  - Income category - Allowance, salary (Will get expected budget asset).
+  - Expense category - medical category, travel category, etc.
+  
+3. View summary of budget
+4. Reallocating or adjusting budget 
+5. Current Status Overview on Dashboard
+6. Reminder of overspending
+7. Simple and comfortable input system 
+8. Easy management of data
+9. Set Goals for Saving
+10. Tracking Cashflow
