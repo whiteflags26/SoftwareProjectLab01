@@ -1,0 +1,58 @@
+# CMake-related files and directories
+CMakeFiles/
+CMakeCache.txt
+CMakeFiles.txt
+CMakeSettings.json
+CMakeUserPresets.json
+
+# Compiled binary files
+bin/
+
+# IDE-specific files and directories
+.vscode/
+.idea/
+*.suo
+*.user
+*.sdf
+*.opensdf
+
+# Compiled object files and libraries
+*.o
+*.a
+*.so
+*.dll
+
+# Build artifacts
+build/
+Debug/
+Release/
+
+# Dependency directories (if not using a package manager)
+external/
+vendor/
+
+# User-specific settings and configuration files
+user_settings.ini
+config.json
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Documentation and generated files
+doc/
+Doxyfile
+
+# Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.vcxproj.webinfo
+
+# macOS-specific files
+.DS_Store
+
+# Windows-specific files
+Thumbs.db
+desktop.ini
