@@ -47,7 +47,7 @@ void List<T>::pop(){
 }
 
 template <typename T>
-size_t List<T>::size() const{
+int List<T>::size() const{
     return currentSize;
 }
 

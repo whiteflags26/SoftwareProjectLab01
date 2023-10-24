@@ -1,10 +1,10 @@
-#include "console.h"
+#include <iostream>
+#include "string.h"
+#include "category.h"
+#include "budget.h"
+#include "driver.h"
 
-int main ()
-{
-    Console::WriteLine("------------- Spendit ------------");
-    Console::WriteLine("Press enter to exit...");
-    Console::ReadLine();
-    Console::WriteLine("Exiting...");
-    return 0;
+int main() {
+    DriverClass driver;
+    driver.MainMenu();
 }
