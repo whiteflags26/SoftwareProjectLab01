@@ -2,16 +2,16 @@
 
 void DriverClass::MainMenu() {
     while (true) {
-        std::cout << "-----------------------------------" << std::endl;
-        std::cout << "Main Menu:" << std::endl;
-        std::cout << "Welcome to SpendIt, A Console-Based Personal Budget Management System" << std::endl;
-        std::cout << "1. Manage Budget" << std::endl;
-        std::cout << "2. Add Transaction" << std::endl;
-        std::cout << "3. Exit" << std::endl;
-        std::cout << "Please enter your choice: ";
+        Console::WriteLine("-----------------------------------");
+        Console::WriteLine("Main Menu:");
+        Console::WriteLine("Welcome to SpendIt, A Console-Based Personal Budget Management System");
+        Console::WriteLine("1. Manage Budget");
+        Console::WriteLine("2. Add Transaction");
+        Console::WriteLine("3. Exit");
+        Console::WriteLine("Please enter your choice: ");
 
         int choice;
-        std::cin >> choice;
+        choice = Console::ReadLine().to_int();
 
         switch (choice) {
             case 1:
@@ -21,26 +21,26 @@ void DriverClass::MainMenu() {
                 AddTransaction();
                 break;
             case 3:
-                std::cout << "Goodbye!" << std::endl;
+                Console::WriteLine("Goodbye!");
                 return;
             default:
-                std::cout << "Invalid choice. Please try again." << std::endl;
+                Console::WriteLine("Invalid choice. Please try again.");
         }
     }
 }
 
 void DriverClass::ManageBudget() {
     while (true) {
-        std::cout << "-----------------------------------" << std::endl;
-        std::cout << "Manage Budget:" << std::endl;
-        std::cout << "1. View Budget" << std::endl;
-        std::cout << "2. Change Budget" << std::endl;
-        std::cout << "3. Make Budget" << std::endl;
-        std::cout << "4. Exit" << std::endl;
-        std::cout << "Please enter your choice: ";
+        Console::WriteLine("-----------------------------------");
+        Console::WriteLine("Manage Budget:");
+        Console::WriteLine("1. View Budget");
+        Console::WriteLine("2. Change Budget");
+        Console::WriteLine("3. Make Budget");
+        Console::WriteLine("4. Exit");
+        Console::WriteLine("Please enter your choice: ");
 
         int choice;
-        std::cin >> choice;
+        choice = Console::ReadLine().to_int();
 
         switch (choice) {
             case 1:
@@ -55,31 +55,31 @@ void DriverClass::ManageBudget() {
             case 4:
                 return; // Exit the ManageBudget menu
             default:
-                std::cout << "Invalid choice. Please try again." << std::endl;
+                Console::WriteLine("Invalid choice. Please try again.");
         }
     }
 }
 
 void DriverClass::ViewBudget() {
     // Implement budget viewing functionality here
-    std::cout << "Inside View Budget function" << std::endl;
+    Console::WriteLine("Inside View Budget function");
     // Add your budget viewing logic here
 }
 
 void DriverClass::ChangeBudget() {
     // Implement budget changing functionality here
-    std::cout << "Inside Change Budget function" << std::endl;
+    Console::WriteLine("Inside Change Budget function");
     // Add your budget changing logic here
 }
 
 void DriverClass::MakeBudget() {
     // Implement budget making functionality here
-    std::cout << "Inside Make Budget function" << std::endl;
+    Console::WriteLine("Inside Make Budget function");
     // Add your budget making logic here
 }
 
 void DriverClass::AddTransaction() {
     // Implement add transaction functionality here
-    std::cout << "Inside Add Transaction function" << std::endl;
+    Console::WriteLine("Inside Add Transaction function");
     // Add your transaction logic here
 }

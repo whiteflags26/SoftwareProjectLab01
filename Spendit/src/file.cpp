@@ -1,5 +1,4 @@
 #include "file.h"
-#include <cstdio>
 
 List<String> FileHandler::Read(const char *filepath)
 {
