@@ -1,5 +1,6 @@
 #pragma once
 #include "string.h"
+#include <cstdio>
 
 class Console
 {
