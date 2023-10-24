@@ -1,51 +1,85 @@
 #include "file.h"
 
-std::vector<std::string> FileHandler::Read(std::string filepath)
+List<String> FileHandler::Read(const char *filepath)
 {
-    FILE *fp = fopen(filepath.c_str(), "r");
+    FILE *fp = fopen(filepath, "r");
     if(fp == NULL)
     {
         throw "Error opening file";
     }
-    std::vector<std::string> lines;
+    List<String> lines;
     char line[10000];
     while(fgets(line, 10000, fp))
     {
-        lines.push_back(line);
-        lines.back().pop_back();
+        lines.push(line);
+        lines.back().pop();
     }
     fclose(fp);
     return lines;
 }
 
-void FileHandler::Write(std::string filepath, std::string content)
+List<String> FileHandler::Read(String &filepath)
 {
-    content.push_back('\n');
+    return FileHandler::Read(filepath.c_str());
+}
 
-    FILE *fp = fopen(filepath.c_str(), "w");
+
+
+void FileHandler::Write(const char *filepath, const char *content)
+{
+    FILE *fp = fopen(filepath, "w");
     if(fp == NULL)
     {
         throw "Error opening file";
     }
-    if(fputs(content.c_str(), fp) == EOF)
+    if(fputs(content, fp) == EOF)
     {
         throw "Error writing to file";
     }
+    fputs("\n", fp);
     fclose(fp);
 }
 
-void FileHandler::WriteLine(std::string filepath, std::string content)
+void FileHandler::Write(String &filepath, const char *content)
 {
-    content.push_back('\n');
+    FileHandler::Write(filepath.c_str(), content);
+}
 
-    FILE *fp = fopen(filepath.c_str(), "a");
+void FileHandler::Write(const char *filepath, String &content)
+{
+    FileHandler::Write(filepath, content.c_str());
+}
+
+void FileHandler::Write(String &filepath, String &content)
+{
+    FileHandler::Write(filepath.c_str(), content.c_str());
+}
+
+
+
+void FileHandler::WriteLine(const char *filepath, const char *content)
+{
+    
+
+    FILE *fp = fopen(filepath, "a");
     if(fp == NULL)
     {
         throw "Error opening file";
     }
-    if(fputs(content.c_str(), fp) == EOF)
+    if(fputs(content, fp) == EOF)
     {
         throw "Error writing to file";
     }
+    fputs("\n", fp);
     fclose(fp);
+}
+
+void FileHandler::WriteLine(const char *filepath, String &content)
+{
+    FileHandler::WriteLine(filepath, content.c_str());
+}
+
+void FileHandler::WriteLine(String &filepath, String &content)
+{
+    FileHandler::WriteLine(filepath.c_str(), content.c_str());
 }

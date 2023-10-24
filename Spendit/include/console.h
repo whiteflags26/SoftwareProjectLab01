@@ -1,9 +1,10 @@
 #pragma once
-#include <string>
+#include "string.h"
 
 class Console
 {
     public:
-        static std::string ReadLine();
-        static void WriteLine(std::string content);
+        static String ReadLine();
+        static void WriteLine(const char *content);
+        static void WriteLine(String &content);
 };

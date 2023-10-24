@@ -1,16 +1,22 @@
 #include "console.h"
 
-std::string Console::ReadLine()
+String Console::ReadLine()
 {
     char buffer[1000];
     fgets(buffer, 1000, stdin);
-    std::string content(buffer);
-    content.pop_back(); 
+    String content = buffer;
+    content.pop();
     return content;
 }
 
-void Console::WriteLine(std::string content)
+void Console::WriteLine(const char *content)
 {
-    content.push_back('\n');
+    fputs(content, stdout);
+    fputs("\n", stdout);
+}
+
+void Console::WriteLine(String &content)
+{
     fputs(content.c_str(), stdout);
+    fputs("\n", stdout);
 }

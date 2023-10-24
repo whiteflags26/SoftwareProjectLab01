@@ -1,11 +1,20 @@
 #pragma once
-#include <vector>
-#include <string>
+#include "string.h"
+#include "list.h"
 
 class FileHandler
 {
     public:
-        std::vector<std::string> Read(std::string filepath);
-        void Write(std::string filepath, std::string content);
-        void WriteLine(std::string filepath, std::string content);
+        List<String> Read(const char *filepath);
+        List<String> Read(String &filepath);
+        
+        void Write(const char *filepath, const char *content);
+        void Write(String &filepath, const char *content);
+        void Write(const char *filepath, String &content);
+        void Write(String &filepath, String &content);
+
+        void WriteLine(const char *filepath, const char *content);
+        void WriteLine(String &filepath, const char *content);
+        void WriteLine(const char *filepath, String &content);
+        void WriteLine(String &filepath, String &content);
 };
