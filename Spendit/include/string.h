@@ -1,11 +1,9 @@
 #pragma once
-#include <algorithm>
-#include <iostream>
 
 class String {
 private:
     char* data;
-    size_t length;
+    int length;
 
 public:
     String();
@@ -15,10 +13,14 @@ public:
 
     String& operator=(const String& other);
     String operator+(const String& other) const;
-    char operator[](size_t index) const;
+    char operator[](int index) const;
+    bool operator==(const String& other) const;
 
-    size_t size() const;
+    int size() const;
     const char* c_str() const;
-    String substr(size_t pos, size_t count) const;
+    String substr(int pos, int count) const;
     void pop();
+    
+    double to_double() const;
+    int to_int() const;
 };
