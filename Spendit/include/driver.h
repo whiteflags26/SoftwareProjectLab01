@@ -10,6 +10,13 @@ class DriverClass {
 public:
     //void DriverClass();
     void MainMenu();
+    
+    ///////////////////////////
     void ManageBudget();
+    
+    void ViewBudget();
+    void ChangeBudget();
+    void MakeBudget();
+    ///////////////////////
     void AddTransaction();
 };

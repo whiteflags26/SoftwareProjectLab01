@@ -30,9 +30,52 @@ void DriverClass::MainMenu() {
 }
 
 void DriverClass::ManageBudget() {
-    // Implement budget management functionality here
-    std::cout << "Inside Manage Budget function" << std::endl;
-    // Add your budget management logic here
+    while (true) {
+        std::cout << "-----------------------------------" << std::endl;
+        std::cout << "Manage Budget:" << std::endl;
+        std::cout << "1. View Budget" << std::endl;
+        std::cout << "2. Change Budget" << std::endl;
+        std::cout << "3. Make Budget" << std::endl;
+        std::cout << "4. Exit" << std::endl;
+        std::cout << "Please enter your choice: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                ViewBudget();
+                break;
+            case 2:
+                ChangeBudget();
+                break;
+            case 3:
+                MakeBudget();
+                break;
+            case 4:
+                return; // Exit the ManageBudget menu
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    }
+}
+
+void DriverClass::ViewBudget() {
+    // Implement budget viewing functionality here
+    std::cout << "Inside View Budget function" << std::endl;
+    // Add your budget viewing logic here
+}
+
+void DriverClass::ChangeBudget() {
+    // Implement budget changing functionality here
+    std::cout << "Inside Change Budget function" << std::endl;
+    // Add your budget changing logic here
+}
+
+void DriverClass::MakeBudget() {
+    // Implement budget making functionality here
+    std::cout << "Inside Make Budget function" << std::endl;
+    // Add your budget making logic here
 }
 
 void DriverClass::AddTransaction() {
