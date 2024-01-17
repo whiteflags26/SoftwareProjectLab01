@@ -1,24 +1,105 @@
-#pragma once
-#include "category.h"
-#include "string.h"
-#include "list.h"
-#include "console.h"
-#include <iostream>
+#include "linkedlist.h"
 
-class Budget {
-public:
-    Budget();
-    Budget(const String& name, const String& timeframe, double totalAllocatedBudget);
-    void AddCategory(const String& name, double allocatedAmount);
-    void ModifyCategory(const String& name, double newAllocatedAmount);
-    void AddSubcategory(const String& categoryName, const String& subcategoryName, double allocatedAmount);
-    double CalculateRemainingBudget();
-    double CalculateTotalExpenses() const;
-    double CalculateTotalIncome() const;
-    void DisplayBudgetSummary() const;
+typedef enum state{
+    pending = 0,
+    analysing = 1,
+    finished = 2
+} STATE;
 
-    String name;
-    String timeframe;
-    double totalAllocatedBudget;
-    List<Category> categories;
-};
+typedef enum result{
+    awaiting = -1,
+    denied = 0,
+    approved = 1
+} RESULT;
+
+typedef class detail {
+    char description[MAX];
+    int quantity;
+    float price;
+} DETAIL;
+
+typedef class budget {
+    int id;
+    char supplier[MAX];
+    char description[MAX];
+    float total;
+    NODE *details;
+    int detailsSize;
+    STATE state;
+    /* when finished */
+    RESULT result;
+    time_t date;
+    char justification[MAX];
+    char user[MAX];
+} BUDGET;
+
+/*
+ * Adds a new budget
+ *  - return  0: Success
+ *  - return -3: Out of memory
+*/
+int add_budget(NODE **start, BUDGET *budget);
+
+/*
+ * Finds a budget given the id
+ *  - returns the budget
+ *  - returns NULL if not found
+*/
+BUDGET* find_budget_by_id(NODE *start, int id);
+
+/*
+ * Removes a budget given the id
+ *  - return  0: Success
+ *  - return -1: Budget not found
+ *  - return -2: List is empty
+*/
+int remove_budget_by_id(NODE **budgets, NODE **queue, int id);
+
+/*
+ * Adds a new detail
+ *  - return  0: Success
+ *  - return -1: Maximum details reached
+ *  - return -3: Out of memory
+*/
+int add_detail(NODE **start, DETAIL *detail);
+
+/*
+ * Finds a detail given the position
+ *  - returns the detail
+ *  - returns NULL if not found
+*/
+DETAIL* find_detail_by_position(NODE *start, int position);
+
+/*
+ * Calculates budget total given certain budget as parameter
+*/
+int calculate_budget_total(BUDGET *budget);
+
+/*
+ * Removes a detail given the position
+ *  - return  0: Success
+ *  - return -1: Detail not found
+ *  - return -2: List is empty
+*/
+int remove_detail_by_position(NODE **start, int position);
+
+/*
+ * Saves all budgets to a file
+ *  - return  0: Success
+ *  - return -1: Error saving
+*/
+int save_budgets(NODE *start);
+
+/*
+ * Load budgets from file
+ *  - return  0: Success
+ *  - return -3: Error opening file
+*/
+int load_budgets(NODE **budgets);
+
+int load_queue(NODE *budgets, NODE **queue);
+
+void print_budget(BUDGET *budget);
+
+#endif spl_budget_h
+

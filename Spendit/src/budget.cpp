@@ -1,119 +1,301 @@
-#pragma once
-#include "category.h"
-#include "string.h"
-#include "list.h"
-#include "console.h"
-#include <iostream>
-
-class Budget {
-public:
-    Budget();
-    Budget(const String& name, const String& timeframe, double totalAllocatedBudget);
-    void AddCategory(const String& name, double allocatedAmount);
-    void ModifyCategory(const String& name, double newAllocatedAmount);
-    void AddSubcategory(const String& categoryName, const String& subcategoryName, double allocatedAmount);
-    double CalculateRemainingBudget();
-    double CalculateTotalExpenses() const;
-    double CalculateTotalIncome() const;
-    void DisplayBudgetSummary() const;
-
-    String name;
-    String timeframe;
-    double totalAllocatedBudget;
-    List<Category> categories;
-};
-Bekkol
-Mir Sayad
+#include <time.h>
 #include "budget.h"
 
-Budget::Budget(){}
+int add_budget(NODE **start, BUDGET *budget){
+    NODE *aux = NULL;
+    BUDGET *temp = NULL;
 
-Budget::Budget(const String& name, const String& timeframe, double totalAllocatedBudget) : name(name), timeframe(timeframe) {
-    totalAllocatedBudget = 0.0;
+    if(*start == NULL){
+        budget->id = 0;
+    }else{
+        aux = *start;
+        while(aux->next != NULL){
+            aux = aux->next;
+        } 
+
+        temp = (BUDGET *) aux->data;
+        budget->id = temp->id + 1;
+    }
+
+    return push(start,budget, sizeof (BUDGET));
 }
 
-void Budget::AddCategory(const String& name, double allocatedAmount) {
-    Category category(name, allocatedAmount);
-    categories.push(category);
+BUDGET* find_budget_by_id(NODE *start, int id){
+    NODE *aux = NULL;
+    BUDGET *data = NULL;
+    int index = 0;
+
+    // Empty list
+    if(start == NULL) return NULL;
+
+    aux = start;
+    while(aux != NULL){
+        data = (BUDGET *) aux->data;
+        if(data->id == id){
+            return data;
+        }
+
+        aux = aux->next;
+        index++;
+    }
+
+    return NULL;
 }
 
-void Budget::ModifyCategory(const String& name, double newAllocatedAmount) {
-    for (int i = 0; i < categories.size(); i++) {
-        if (categories[i].name == name) {
-            categories[i].ModifyAllocatedAmount(newAllocatedAmount);
+int remove_budget_by_id(NODE **budgets, NODE **queue, int id){
+    NODE *aux = NULL;
+    BUDGET *data = NULL;
+    int index = 0, res;
+
+    // Empty list
+    if(*budgets == NULL) return -2;
+
+
+    aux = *budgets;
+    while(aux != NULL){
+        data = (BUDGET *) aux->data;
+        if(data->id == id){
+            clear(&data->details);
+            res = splice(budgets, index);
+            load_queue(*budgets, queue);
+            return res;
+        }
+
+        aux = aux->next;
+        index++;
+    }
+
+    return -1;
+}
+
+int add_detail(NODE **start, DETAIL *detail){
+    if(length(*start) >= 20) return -1;
+    return push(start,detail, sizeof (DETAIL));
+}
+
+DETAIL* find_detail_by_position(NODE *start, int position){
+    NODE *aux = NULL;
+    DETAIL *data = NULL;
+    int index = 0;
+
+    // Empty list
+    if(start == NULL) return NULL;
+
+    if(length(start) - 1 < position || position < index) return NULL;
+
+    aux = start;
+    while(aux != NULL){
+        data = (DETAIL *) aux->data;
+        if(index == position){
+            return data;
+        }
+
+        aux = aux->next;
+        index++;
+    }
+
+    return NULL;
+}
+
+int calculate_budget_total(BUDGET *budget){
+    NODE *aux = NULL;
+    DETAIL *temp;
+
+    budget->total = 0;
+
+    aux = budget->details;
+    while(aux != NULL){
+        temp = (DETAIL*) aux->data;
+
+        budget->total += temp->quantity * temp->price;
+
+        aux = aux->next;
+    }
+
+    return 0;
+}
+
+int remove_detail_by_position(NODE **start, int position){
+    NODE *aux = NULL;
+    BUDGET *data = NULL;
+    int index = 0;
+
+    // Empty list
+    if(*start == NULL) return -2;
+
+    if(length(*start) - 1 < position) return -1;
+
+    aux = *start;
+    while(aux != NULL){
+        if(index == position) return splice(start, index);
+
+        aux = aux->next;
+        index++;
+    }
+
+    return -1;
+}
+
+int save_budgets(NODE *start){
+    BUDGET *b = NULL;
+    NODE *aux, *baux = NULL;
+    int res, i;
+
+    // Empty the file
+    remove(budgets_filename);
+
+    aux = start;
+    while(aux != NULL){
+        b = (BUDGET *) aux->data;
+
+        b->detailsSize = length(b->details);
+
+        // Appends data to file
+        res = appendToFile(budgets_filename, aux->data, sizeof (BUDGET));
+
+        // If failed, then delete file.
+        if(res != 0) {
+            remove(budgets_filename);
+            return -1;
+        }
+
+        baux = b->details;
+        while(baux != NULL){
+            res = appendToFile(budgets_filename, baux->data, sizeof (DETAIL));
+
+            // If failed, then delete file.
+            if(res != 0) {
+                remove(budgets_filename);
+                return -1;
+            }
+
+            baux = baux->next;
+        }
+
+        aux = aux->next;
+    }
+
+    return 0;
+}
+
+int load_budgets(NODE **budgets){
+    int res, i;
+
+    FILE *fp = fopen(budgets_filename,"rb");
+
+    if(fp == NULL) return -3;
+
+    do {
+        // Allocates memory for the data
+        BUDGET *budget_data = (BUDGET *) malloc(sizeof (BUDGET));
+
+        // Reads budget data
+        res = fread(budget_data, sizeof (BUDGET),1, fp);
+
+        // Didn't read anything, then break the loop
+        if(res == 0) break;
+
+        // Reset pointer
+        budget_data->details = NULL;
+
+        add_budget(budgets, budget_data);
+
+        for(i = 0; i < budget_data->detailsSize; i++){
+
+            // Allocates memory for the data
+            DETAIL *detail_data = (DETAIL *) malloc(sizeof (DETAIL));
+
+            // Reads details data
+            res = fread(detail_data, sizeof (DETAIL),1, fp);
+
+            // Didn't read anything, then break the loop
+            if(res == 0) break;
+
+            add_detail(&budget_data->details, detail_data);
+        }
+    }while(res != 0);
+
+    fclose(fp);
+
+    return 0;
+}
+
+int load_queue(NODE *budgets, NODE **queue){
+    NODE *aux = NULL;
+    BUDGET *temp = NULL;
+
+    if(budgets == NULL) return -1;
+
+    *queue = NULL;
+
+    aux = budgets;
+    while(aux != NULL){
+        temp = (BUDGET*) aux->data;
+
+        if(temp->state == pending) push(queue, temp, sizeof(BUDGET));
+
+        aux = aux->next;
+    }
+
+    return 0;
+}
+
+void print_budget(BUDGET *budget){
+    NODE *aux = NULL;
+    DETAIL *detail = NULL;
+    int counter = 0;
+
+    printf("------- BUDGET -------\n");
+    printf(" |- ID: %i\n", budget->id);
+    printf(" |- Supplier: %s\n", budget->supplier);
+    printf(" |- Description: %s\n", budget->description);
+    printf(" |- Total: %.2f$\n", budget->total);
+
+    switch (budget->state) {
+        case 0:
+            printf(" |- State: Pending\n");
             break;
+        case 1:
+            printf(" |- State: Analysing\n");
+            break;
+        case 2:
+            printf(" |- State: Finished\n");
+            break;
+    }
+
+    aux = budget->details;
+
+    if(aux == NULL){
+        printf(" |- Details list empty!\n");
+    }else{
+        printf(" |- Details list:\n");
+        while(aux != NULL){
+            detail = (DETAIL*) aux->data;
+
+            printf("  |- Item %i:\n", counter);
+            printf("     |- Description: %s\n", detail->description);
+            printf("     |- Quantity: %d\n", detail->quantity);
+            printf("     |- Unitary price: %.2f$\n", detail->price);
+
+            counter++;
+            aux = aux->next;
         }
     }
-}
 
+    if(budget->state != finished) return;
 
-// void Budget::AddSubcategory(const String& categoryName, const String& subcategoryName, double allocatedAmount) {
-//     for (Category& category : categories) {
-//         if (category.name == categoryName) {
-//             category.AddSubcategory(subcategoryName, allocatedAmount);
-//             break; // Assuming each subcategory name is unique within its category
-//         }
-//     }
-// }
-
-double Budget::CalculateRemainingBudget(){
-    double totalAllocated = 0.0;
-    for (int i = 0; i < categories.size(); i++) {
-        totalAllocated += categories[i].GiveAlloctedAmount();
+    switch (budget->result) {
+        case -1:
+            break;
+        case 0:
+            printf(" |- Result: Denied\n");
+            break;
+        case 1:
+            printf(" |- Result: Approved\n");
+            break;
     }
 
-    double totalIncome = 0.0;
-    double totalExpenses = 0.0;
-
-    double remainingBudget = totalIncome - totalExpenses - totalAllocated;
-
-    return remainingBudget;
-}
-
-double Budget::CalculateTotalExpenses() const {
-    double totalExpenses = 0.0;
-    return totalExpenses;
-}
-
-double Budget::CalculateTotalIncome() const {
-    double totalIncome = 0.0;
-    return totalIncome;
-}
-
-void Budget::DisplayBudgetSummary() const {
-    Console::WriteLine("View Budget:");
-    Console::WriteLine("Budget Status:");
-
-    // Calculate total allocated budget, total expenses, and total income
-    //double totalAllocatedBudget = 0.0;
-    // for (int i = 0; i < categories.size(); i++) {
-    //     totalAllocatedBudget += categories[i].allocatedAmount;
-    // }
-
-    double totalExpenses = 0.0;
-    // for (int i = 0; i < expenses.size(); i++) {
-    //     totalExpenses += expenses[i].allocatedAmount;
-    // }
-
-    double totalIncome = 0.0;
-    // for (int i = 0; i < incomes.size(); i++) {
-    //     totalIncome += incomes[i].allocatedAmount;
-    // }
-
-    double remainingBudget = totalAllocatedBudget - totalExpenses + totalIncome;
-    double riskOfOverspending = (totalExpenses / totalAllocatedBudget) * 100;
-    double amountOverspent = totalExpenses - totalIncome;
-    double amountSaved = totalIncome - totalExpenses;
-
-    // Display budget status
-    // Console::WriteLine("Total Allocated Budget: $" << totalAllocatedBudget);
-    // Console::WriteLine("Total Expenses: $" << totalExpenses);
-    // Console::WriteLine("Total Income: $" << totalIncome);
-    // Console::WriteLine("Remaining Budget: $" << remainingBudget);
-    // Console::WriteLine("Risk of Overspending: " << riskOfOverspending << "%");
-    // Console::WriteLine("Amount Overspent: $" << amountOverspent);
-    // Console::WriteLine("Amount Saved: $" << amountSaved);
-
-    // Console::WriteLine("Press Enter to return to the main menu.");
-    Console::ReadLine();
+    printf(" |- Date: %s\n", asctime(gmtime(&budget->date)));
+    printf(" |- Justification: %s\n", budget->justification);
+    printf(" |- User that analysed: %s\n", budget->user);
 }
